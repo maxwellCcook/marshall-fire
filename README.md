@@ -1,2 +1,2 @@
 # marshall-fire
-Data and statistics describing the damages and losses in the #MarshallFire
+Data and statistics describing the damages and losses in the Marshall Fire.
