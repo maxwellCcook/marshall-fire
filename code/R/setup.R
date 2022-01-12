@@ -9,9 +9,10 @@ library(performance)
 library(bayesrules)
 library(bayesplot)
 library(tidybayes)
-library(vctrs)
-library(data.table)
-library(magrittr)
+library(lubridate)
+library(scales)
+library(ggpubr)
+library(grid)
 #################
 # ENVIRONMENTS
 setwd("C:/Users/mccoo/OneDrive/mcook/marshall-fire/")
