@@ -61,6 +61,6 @@ evt <- st_read("data/spatial/marshall_fire_boundary_nifc.gpkg") %>%
 # Convex hull of boundary
 hull <- st_convex_hull(evt) %>% st_buffer(100)
 # Spatial filter on ztrax
-ztrax.res.evt <- st_intersection(ztrax.res, evt)
-ztrax.res.hull <- st_intersection(ztrax.res, hull)
+ztrax.res.evt <- st_intersection(ztrax.res, evt) %>% st_transform(st_crs(ztrax.res))
+ztrax.res.hull <- st_intersection(ztrax.res, hull) %>% st_transform(st_crs(ztrax.res))
 

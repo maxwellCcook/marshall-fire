@@ -62,6 +62,134 @@ ggsave(p2, file = "../../figures/MarshallFire_DmgAssess_StatusPerc.png",
        width=3.5, height=3.25, dpi = 300) # adjust dpi accordingly
 ```
 
+# Year Built
+
+```{r fig.width=5, fig.height=3}
+# Density plot
+ggplot(data=ztrax.res.evt, aes(x=YearBuilt)) +
+  geom_density(stat='count') +
+  theme_minimal()
+# By destruction
+ggplot(data=ztrax.res.evt, aes(x=YearBuilt, fill=DAMAGE)) +
+  geom_bar(stat='count', position='stack') +
+  scale_fill_manual(values = c("#fecc5c", "#bd0026", "#c2e699")) +
+  theme_minimal()
+```
+
+# Roof Cover
+
+```{r}
+summary(factor(ztrax.res.evt$RoofCoverStndCode))
+```
+
+Testing missingness.
+
+```{r}
+print("Missingness: ...")
+paste("Year built: ",dim(ztrax.res%>%filter(is.na(YearBuilt)))[1], sep="")
+paste("Effective year built: ",dim(ztrax.res%>%filter(is.na(EffectiveYearBuilt)))[1], sep="")
+paste("Building area (sqft): ",dim(ztrax.res%>%filter(is.na(BuildingAreaSqFt)))[1], sep="")
+paste("Lot size (sqft): ",dim(ztrax.res%>%filter(is.na(LotSizeSquareFeet)))[1], sep="")
+paste("Tax amount: ",dim(ztrax.res%>%filter(is.na(TaxAmount)))[1], sep="")
+paste("No. of buildings: ",dim(ztrax.res%>%filter(is.na(NoOfBuildings)))[1], sep="")
+paste("Total assessed value: ",dim(ztrax.res%>%filter(is.na(TotalAssessedValue)))[1], sep="")
+paste("Lot assessed value: ",dim(ztrax.res%>%filter(is.na(LandAssessedValue)))[1], sep="")
+paste("Improvement value: ",dim(ztrax.res%>%filter(is.na(ImprovementAssessedValue)))[1], sep="")
+paste("Wall material: ",dim(ztrax.res%>%filter(is.na(ExteriorWallStndCode)))[1], sep="")
+paste("Roof cover: ",dim(ztrax.res%>%filter(is.na(RoofCoverStndCode)))[1], sep="")
+paste("Quality code: ",dim(ztrax.res%>%filter(is.na(BuildingQualityStndCode)))[1], sep="")
+paste("LU code: ",dim(ztrax.res%>%filter(is.na(PropertyLandUseStndCode)))[1], sep="")
+paste("Heating type: ",dim(ztrax.res%>%filter(is.na(HeatingTypeorSystemStndCode)))[1], sep="")
+paste("AC type: ",dim(ztrax.res%>%filter(is.na(AirConditioningTypeorSystemStndCode)))[1], sep="")
+```
+
+## Binomial GLM
+
+```{r}
+# tidy up!
+mod.df <- ztrax.res.evt %>% 
+  mutate(DESTROY = if_else(DAMAGE=="Destroyed", 1, 0),
+         BuildingAreaSqFt = as.numeric(BuildingAreaSqFt),
+         RoofCoverStndCode = as.factor(RoofCoverStndCode),
+         RoofCoverDummy = as.factor(if_else(RoofCoverStndCode!="OT", "OTHER",  "OT")),
+         ExteriorWallStndCode = as.factor(ExteriorWallStndCode),
+         ExtWallDummy = as.factor(if_else(ExteriorWallStndCode!="OT", "OTHER", "OT")),
+         BuildingQualityStndCode = as.factor(BuildingQualityStndCode),
+         QualityDummy = as.factor(if_else(BuildingQualityStndCode!="C", "OTHER", "C")),
+         PropertyLandUseStndCode = as.factor(PropertyLandUseStndCode))
+mod.df <- within(mod.df, RoofCoverDummy <- relevel(RoofCoverDummy, ref = "OTHER"))
+mod.df <- within(mod.df, ExtWallDummy <- relevel(ExtWallDummy, ref = "OTHER"))
+mod.df <- within(mod.df, QualityDummy <- relevel(QualityDummy, ref = "OTHER"))
+
+# Set up the binomial GLM
+m1f <- glm(
+  DESTROY ~ YearBuilt + log(BuildingAreaSqFt) + log(LotSizeSquareFeet) + 
+    RoofCoverDummy + ExtWallDummy + QualityDummy + NoOfBuildings, 
+  family = binomial(link = "logit"), data = mod.df)
+summary(m1f)
+```
+
+## Bayes GLM
+
+Intercept only.
+
+```{r include=F}
+setwd('../../')
+m1b <- brm(
+  DESTROY ~ 1,
+  family = bernoulli(link = "logit"), data = mod.df, 
+  iter = 2000, warmup = 1000, cores = 4, chains = 4,
+  backend = "cmdstanr", threads = threading(4),
+  control = list(adapt_delta = 0.99, max_treedepth=15), 
+  sample_prior = TRUE, save_pars = save_pars(all=TRUE),
+  seed = 123, file = paste(getwd(), "fits/m1b.Rds", sep="/")
+)
+```
+
+Model summary.
+
+```{r}
+summary(m1b)
+```
+
+Check for non-convergence in the chains. 
+
+```{r fig.height=2.5, fig.width=4}
+mcmc_plot(m1b, type = "trace")
+```
+
+Check for autocorrelation.
+
+```{r fig.height=4, fig.width=6}
+mcmc_plot(m1b, type = "acf_bar")
+```
+
+Point estimates and associated uncertainty levels.
+
+```{r fig.height=2, fig.width=3}
+stanplot(m1b, type = "areas", prob = 0.95)
+```
+
+Update model with year built attribute.
+
+```{r include=F}
+m1.1b <- update(
+  m1b, formula. = bf(DESTROY ~ 1 + YearBuilt), newdata = mod.df, recompile = T, file = "../../fits/m1.1b.Rds"
+)
+```
+
+```{r}
+summary(m1.1b)
+```
+
+Exponentiated fixed effects.
+
+```{r}
+exp(fixef(m1b)[,-2])
+```
+
+## Ordinal / Categorical Bayes Model
+
 Check on the default priors.
 
 ```{r}
