@@ -13,12 +13,23 @@ library(lubridate)
 library(scales)
 library(ggpubr)
 library(grid)
+library(forcats)
 #################
 # ENVIRONMENTS
 setwd("C:/Users/mccoo/OneDrive/mcook/marshall-fire/")
 #################
 # DATA
 # ~~~~~~~
+# Load the ICS-209-PLUS spatial points
+ics <- st_read("../ics209/data/spatial/ics209plus_conus_incidents_spatial_1999to2020.gpkg") %>%
+  mutate(START_MONTH = as.factor(month(DISCOVERY_DATE, label=T)),
+         START_WEEK = as.factor(week(DISCOVERY_DATE)),
+         MTBS_ID = gsub("\\s*\\([^\\)]+\\)","", LRGST_MTBS_FIRE_INFO),
+         MTBS_FIRE_NAME = stringr::str_extract(string = LRGST_MTBS_FIRE_INFO,
+                                               pattern = "(?<=\\().*(?=\\))"))
+# Read in QC'd ICS-WEST
+ics.west <- read.csv('../ics209/data/ics209plus_wf_incidents_west_1999to2020_edit_qc.csv')
+
 # Damage assessment linked to ZTRAX
 # Residential only
 dmg.res <- st_read("data/spatial/damage_records_geocoded_matched.gpkg") %>%
@@ -64,3 +75,13 @@ hull <- st_convex_hull(evt) %>% st_buffer(100)
 ztrax.res.evt <- st_intersection(ztrax.res, evt) %>% st_transform(st_crs(ztrax.res))
 ztrax.res.hull <- st_intersection(ztrax.res, hull) %>% st_transform(st_crs(ztrax.res))
 
+# MTBS perimeters
+mtbs <- st_read("C:/Users/mccoo/OneDrive/mcook/data/mtbs/mtbs_perims_DD/mtbs_perims_DD.gpkg") %>% 
+  mutate(
+    MTBS_DATE = as.Date(Ig_Date, "%Y-%m-%d"),
+    MTBS_YEAR = format(Ig_Date, format = "%Y"),
+    MTBS_ID = Event_ID,
+    MTBS_FIRE_NAME = Incid_Name,
+    MTBS_ACRES = BurnBndAc) %>% 
+  dplyr::select(MTBS_DATE, MTBS_YEAR, MTBS_FIRE_NAME, MTBS_ID, MTBS_ACRES) %>%
+  st_transform(st_crs(ics))

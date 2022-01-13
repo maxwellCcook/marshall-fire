@@ -12,7 +12,7 @@ source("setup.R")
 
 ## Marshall Fire, CO (2021): Residential Damage Assessment
 
-With 1,084 home destroyed, the Marshall Fire is Colorado's most destructive wildfire disaster and in the top 15 most destructive wildfires in the western United States since 1999. 
+With 1,084 home destroyed, the Marshall Fire is Colorado's most destructive wildfire disaster and in the top 15 most destructive wildfires in the western United States since 1999. The grass fire ignited near suburban Boulder County and ripped through the communities of Superior and Louisville fueled by a record conditions and 100+ MPH winds.
 
 ```{r}
 glimpse(ztrax.res)
@@ -64,25 +64,53 @@ ggsave(p2, file = "../../figures/MarshallFire_DmgAssess_StatusPerc.png",
 
 # Year Built
 
-```{r fig.width=5, fig.height=3}
-# Density plot
-ggplot(data=ztrax.res.evt, aes(x=YearBuilt)) +
-  geom_density(stat='count') +
-  theme_minimal()
+```{r fig.height=2.5, fig.width=5}
 # By destruction
-ggplot(data=ztrax.res.evt, aes(x=YearBuilt, fill=DAMAGE)) +
+p5 <- ggplot(data=ztrax.res.evt, aes(x=EffectiveYearBuilt, fill=DAMAGE)) +
   geom_bar(stat='count', position='stack') +
-  scale_fill_manual(values = c("#fecc5c", "#bd0026", "#c2e699")) +
-  theme_minimal()
+  scale_fill_viridis_d() +
+  labs(x="", y="", fill="Status",
+       title="Home Damages by Effective Year Built") +
+  theme_minimal() +
+  theme(plot.title = element_text(size=12))
+p5
+ggsave(p5, file = "../../figures/MarshallFire_DmgAssess_YearBuilt.png",
+       width=5, height=2.5, dpi = 300) # adjust dpi accordingly
 ```
 
-# Roof Cover
+# Roof Cover / Wall Material
 
 ```{r}
 summary(factor(ztrax.res.evt$RoofCoverStndCode))
+summary(factor(ztrax.res.evt$ExteriorWallStndCode))
+ztrax.res.evt <- ztrax.res.evt %>% mutate(ExteriorWallStndCode = factor(ExteriorWallStndCode))
 ```
 
-Testing missingness.
+```{r fig.height=2.5, fig.width=5}
+p3 <- ggplot(data=ztrax.res.evt, aes(x=fct_infreq(ExteriorWallStndCode), fill=DAMAGE)) +
+  geom_bar(stat='count', position='stack') +
+  scale_fill_viridis_d() +
+  labs(x="", y="", fill="Status",
+       title="Home Damages by Exterior Wall Material") +
+  theme_minimal() +
+  theme(plot.title = element_text(size=12))
+p3
+ggsave(p3, file = "../../figures/MarshallFire_DmgAssess_WallMaterial.png",
+       width=5, height=2.5, dpi = 300) # adjust dpi accordingly
+# Roof material
+p4 <- ggplot(data=ztrax.res.evt, aes(x=fct_infreq(RoofCoverStndCode), fill=DAMAGE)) +
+  geom_bar(stat='count', position='stack') +
+  scale_fill_viridis_d() +
+  labs(x="", y="", fill="Status",
+       title="Home Damages by Roofing Material") +
+  theme_minimal() +
+  theme(plot.title = element_text(size=12))
+p4
+ggsave(p4, file = "../../figures/MarshallFire_DmgAssess_RoofMaterial.png",
+       width=5, height=2.5, dpi = 300) # adjust dpi accordingly
+```
+
+Summarize missingness.
 
 ```{r}
 print("Missingness: ...")
