@@ -170,11 +170,11 @@ Point estimates and associated uncertainty levels.
 stanplot(m1b, type = "areas", prob = 0.95)
 ```
 
-Update model with year built attribute.
+Update model with exterior wall material.
 
 ```{r include=F}
 m1.1b <- update(
-  m1b, formula. = bf(DESTROY ~ 1 + YearBuilt), newdata = mod.df, recompile = T, file = "../../fits/m1.1b.Rds"
+  m1b, formula. = bf(DESTROY ~ 1 + ExtWallDummy), newdata = mod.df, recompile = T
 )
 ```
 
@@ -185,8 +185,13 @@ summary(m1.1b)
 Exponentiated fixed effects.
 
 ```{r}
-exp(fixef(m1b)[,-2])
+exp(fixef(m1.1b)[,-2])
 ```
+
+```{r fig.height=3, fig.width=2.5}
+conditional_effects(m1.1b)
+```
+
 
 ## Ordinal / Categorical Bayes Model
 
@@ -220,21 +225,6 @@ summary(m1.1)
 fitted(m1.1)[1, , ] %>% 
   round(digits = 2) %>% 
   t()
-```
-
-```{r}
-p2 <-
-  ztrax.dmg %>% 
-  mutate(DAMAGE = as.factor(DAMAGE)) %>%
-  count(, career) %>% 
-  group_by(fi) %>% 
-  mutate(proportion = n / sum(n)) %>% 
-  mutate(f = as.double(fi)) %>% 
-  
-  ggplot(aes(x = (f - 1) / 9, y = proportion, fill = career)) +
-  geom_area() +
-  scale_fill_manual(values = wes_palette("Moonrise2")[c(4, 2, 1)]) +
-  xlab("family_income, descritized")
 ```
 
 ```{r}
