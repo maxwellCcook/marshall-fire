@@ -70,10 +70,20 @@ evt <- st_read("data/spatial/marshall_fire_boundary_nifc.gpkg") %>%
   st_transform(st_crs(ztrax.res)) %>%
   dplyr::select(poly_Incid)
 # Convex hull of boundary
-hull <- st_convex_hull(evt) %>% st_buffer(100)
+hull <- st_convex_hull(evt) %>% st_buffer(250)
+
 # Spatial filter on ztrax
 ztrax.res.evt <- st_intersection(ztrax.res, evt) %>% st_transform(st_crs(ztrax.res))
 ztrax.res.hull <- st_intersection(ztrax.res, hull) %>% st_transform(st_crs(ztrax.res))
+
+# Boudler County
+boco <- st_read("data/spatial/boulder_county.gpkg")
+cities <- st_read("data/spatial/boco_major_cities.gpkg") %>%
+  st_transform(st_crs(boco))
+boco.cities <- st_intersection(cities, boco)
+counties <- st_read("data/spatial/tl_2019_us_county_west.gpkg") 
+co.co <- counties %>%
+  filter(STATEFP == "08")
 
 # MTBS perimeters
 mtbs <- st_read("C:/Users/mccoo/OneDrive/mcook/data/mtbs/mtbs_perims_DD/mtbs_perims_DD.gpkg") %>% 

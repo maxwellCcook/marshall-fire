@@ -1,5 +1,5 @@
 ---
-title: "figures"
+title: "co-figures"
 author: "Maxwell C. Cook"
 output: html_document
 ---
@@ -13,10 +13,11 @@ Isolate CO fires.
 
 ```{r}
 ics.co <- ics.west %>% filter(STUSPS == 'CO')
+### Summaries
 paste("Number of wildfire incidents in 209s: ", dim(ics.co)[1])
 paste("Number of destructive (n>1) CO incidents: ", dim(ics.co%>%filter(STR_DESTROYED_RES_TOTAL>0))[1])
-paste("Total number of structures lost: ", sum(ics.co$STR_DESTROYED_TOTAL)+991)
-paste("Total number of res. structures lost: ", sum(ics.co$STR_DESTROYED_RES_TOTAL)+969)
+paste("Total number of structures lost: ", sum(ics.co$STR_DESTROYED_TOTAL)+1091)
+paste("Total number of res. structures lost: ", sum(ics.co$STR_DESTROYED_RES_TOTAL)+1084)
 tmp <- ics.co %>% filter(START_YEAR <= 2010)
 paste("Res. structures lost 1999-2010: ", sum(tmp$STR_DESTROYED_RES_TOTAL))
 tmp <- ics.co %>% filter(START_YEAR > 2010)
@@ -26,61 +27,11 @@ paste("Marshall Fire % Destruction: ", 1091/sum(ics.co$STR_DESTROYED_TOTAL)*100)
 paste("Marshall Fire % Destruction (residential): ", 1084/sum(ics.co$STR_DESTROYED_RES_TOTAL)*100)
 ```
 
-Plot CO destruction.
-
-```{r warning=F, message=F, fig.width=5.25, fig.height=3}
-# plot
-f1 <- ics.co %>% as_tibble() %>%
-  group_by(START_YEAR) %>%
-  summarize(destr_tot = sum(STR_DESTROYED_TOTAL),
-            destr_res = sum(STR_DESTROYED_RES_TOTAL)) %>%
-  mutate(destr_tot_c = cumsum(destr_tot),
-         destr_res_c = cumsum(destr_res)) %>%
-  ungroup() %>%
-  add_row(START_YEAR = 2021, destr_tot = 1091, destr_res = 1084, destr_tot_c = 5357, destr_res_c = 3734) %>%
-  ggplot() +
-    geom_area(aes(x=START_YEAR, y=destr_tot_c, fill="Total Structures (Cumulative)")) +
-    geom_area(aes(x=START_YEAR, y=destr_res_c, fill="Residential Structures (Cumulative)"), position='identity') +
-    # scale_y_continuous(labels = scales::label_number(suffix = " K", scale = 1e-3)) +
-    geom_bar(aes(x=START_YEAR, y=destr_tot, fill="Annual Loss (Total)"), stat='identity') +
-    scale_fill_manual(values = c("grey15", "#8c2d04", "#fee391"), guide = guide_legend(reverse = TRUE)) +
-    # geom_bar(aes(x=START_YEAR, y=destr_res, fill="Res. Structures"), position='identity', stat='identity') +
-    labs(x="\nIgnition Year", y="Structures Destroyed\n", fill="",
-         title="Colorado Wildfire-Related Structure Loss (1999-2021)\n") +
-    theme_minimal() +
-    theme(plot.title = element_text(size = 12), legend.position=c(0.35, 0.8))
-f1
-ggsave(f1, file = "../../figures/CO_StructureLoss_1999to2021.png", 
-       width=5, height=3, dpi = 700) # adjust dpi accordingly
-```
-
-Plot CO destruction. Not cumulative.
-
-```{r warning=F, message=F, fig.width=5.25, fig.height=3}
-# plot
-f2 <- ics.co %>% as_tibble() %>%
-  group_by(START_YEAR) %>%
-  summarize(destr_tot = sum(STR_DESTROYED_TOTAL),
-            destr_res = sum(STR_DESTROYED_RES_TOTAL)) %>%
-  ungroup() %>%
-  add_row(START_YEAR = 2021, destr_tot = 1091, destr_res = 1084) %>%
-  ggplot() +
-    geom_bar(aes(x=START_YEAR, y=destr_res), fill="#a63603", stat="identity", position='identity') +
-    labs(x="\nIgnition Year", y="Homes Destroyed\n", fill="",
-         title="Colorado Wildfire-Related Home Loss (1999-2021)\n") +
-    theme_minimal() +
-    theme(plot.title = element_text(size = 12), legend.position="top")
-f2
-ggsave(f2, file = "../../figures/CO_StructureLoss_RES.png", 
-       width=5, height=3, dpi = 700) # adjust dpi accordingly
-```
-
 Plot CO destruction. Not cumulative. By incident.
 
 ```{r warning=F, message=F, fig.width=5.5, fig.height=3.5}
-plasma_pal <- viridis::plasma(6)
 # plot
-f4 <- ics.co %>% as_tibble() %>%
+f1 <- ics.co %>% as_tibble() %>%
   add_row(INCIDENT_NAME = "MARSHALL FIRE", START_YEAR = 2021, STR_DESTROYED_TOTAL = 1091, STR_DESTROYED_RES_TOTAL = 1084) %>%
   ggplot(aes(x=START_YEAR, y=STR_DESTROYED_RES_TOTAL, group=factor(INCIDENT_NAME), fill=STR_DESTROYED_RES_TOTAL), color="grey10") +
     geom_bar(stat="identity", position='stack') +
@@ -98,15 +49,15 @@ f4 <- ics.co %>% as_tibble() %>%
           axis.text.y = element_text(size=8),
           axis.text.x = element_text(size=8),
           legend.position="none")
-f4
-ggsave(f4, file = "../figures/CO_StructureLoss_NoCSum_RES_byIncident.png", 
+f1
+ggsave(f1, file = "../../figures/CO_StructureLoss_RES_byIncident.png", 
        width=5.5, height=3.5, dpi = 700) # adjust dpi accordingly
 ```
 
 Homes per acres burned area by year. 2021 = ~32,860 acres (132.97)
 
 ```{r warning=F, message=F, fig.width=5.25, fig.height=3}
-f5 <- ics.co %>% group_by(START_YEAR) %>%
+f2 <- ics.co %>% group_by(START_YEAR) %>%
   mutate(FINAL_HA = FINAL_ACRES*0.404686) %>%
   summarize(burned_area = sum(FINAL_KM2),
             str_des = sum(STR_DESTROYED_RES_TOTAL)) %>%
@@ -122,17 +73,20 @@ f5 <- ics.co %>% group_by(START_YEAR) %>%
          title="Colorado Wildfire-Related Structure Loss Rate (1999-2021)\n") +
   theme_minimal() +
   theme(plot.title = element_text(size = 11), legend.position=c(0.2, 1.1))
-f5
-ggsave(f5, file = "../CO_StructureLoss_DestRate_BurnedArea.png", 
+f2
+ggsave(f2, file = "../../figures/CO_StructureLoss_DestRate_BurnedArea.png", 
        width=5.25, height=3, dpi = 700) # adjust dpi accordingly
 ```
+
+MTBS burned area.
 
 ```{r warning=F, message=F, fig.width=5.25, fig.height=3}
 # Isolate MTBS for CO
 co <- st_read("C:/Users/mccoo/OneDrive/mcook/data/boundaries/political/colorado.gpkg", quiet=T) %>%
   st_transform(st_crs(mtbs))
-glimpse(mtbs)
-mtbs.co <- mtbs %>% st_intersection(., co) %>% mutate(MTBS_YEAR = as.integer(MTBS_YEAR))
+mtbs.co <- mtbs %>% 
+  st_intersection(., co) %>% 
+  mutate(MTBS_YEAR = as.integer(MTBS_YEAR))
 # Plot
 f6 <- mtbs.co %>% group_by(MTBS_YEAR) %>%
   summarize(burned_area = sum(MTBS_ACRES)) %>%
@@ -148,6 +102,21 @@ f6 <- mtbs.co %>% group_by(MTBS_YEAR) %>%
   theme_minimal() +
   theme(plot.title = element_text(size = 14))
 f6
-ggsave(f6, file = "../CO_BurnedArea_1984to2021.png",
+ggsave(f6, file = "../../figures/CO_BurnedArea_MTBS_1984to2021.png",
        width=5, height=3, dpi = 700) # adjust dpi accordingly
 ```
+
+Statewide maps.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
