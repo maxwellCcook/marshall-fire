@@ -1762,80 +1762,133 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3B0aW9ucyhqYXZhLnBhcmFtZXRlcnMgPSBcIi1YbXgyMEdcIilcbm9wdGlvbnModGltZW91dD0yMDApXG5cbmxpYnJhcnkocjVyKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3B0aW9ucyhqYXZhLnBhcmFtZXRlcnMgPSBcIi1YbXgyMEdcIilcbm9wdGlvbnModGltZW91dCA9IG1heCg2MDAsIGdldE9wdGlvbihcInRpbWVvdXRcIikpKVxuXG5saWJyYXJ5KHI1cilcbmxpYnJhcnkoc2YpXG5saWJyYXJ5KGRhdGEudGFibGUpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KGFraW1hKVxubGlicmFyeShkcGx5cilcbmxpYnJhcnkocmFzdGVyKVxubGlicmFyeShvc21kYXRhKVxubGlicmFyeShtYXB2aWV3KVxuYGBgIn0= -->
 <pre class="r"><code>options(java.parameters = &quot;-Xmx20G&quot;)
-options(timeout=200)
+options(timeout = max(600, getOption(&quot;timeout&quot;)))
 
-library(r5r)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG5Mb2FkaW5nIHJlcXVpcmVkIG5hbWVzcGFjZTogc2ZcbkxvYWRpbmcgcmVxdWlyZWQgbmFtZXNwYWNlOiBySmF2YVxuUGxlYXNlIG1ha2Ugc3VyZSB5b3UgaGF2ZSBhbHJlYWR5IGFsbG9jYXRlZCBzb21lIG1lbW9yeSB0byBKYXZhIGJ5IHJ1bm5pbmc6XG4gIG9wdGlvbnMoamF2YS5wYXJhbWV0ZXJzID0gJy1YbXgyRycpLlxuQ3VycmVudGx5LCBKYXZhIG1lbW9yeSBpcyBzZXQgdG8gLVhteDIwR1xuIn0= -->
-<pre><code>Registered S3 method overwritten by &#39;data.table&#39;:
-  method           from
-  print.data.table     
-Loading required namespace: sf
-Loading required namespace: rJava
-Please make sure you have already allocated some memory to Java by running:
-  options(java.parameters = &#39;-Xmx2G&#39;).
-Currently, Java memory is set to -Xmx20G</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzZilcbmBgYCJ9 -->
-<pre class="r"><code>library(sf)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTGlua2luZyB0byBHRU9TIDMuOC4xLCBHREFMIDMuMi4xLCBQUk9KIDcuMi4xOyBzZl91c2VfczIoKSBpcyBUUlVFXG4ifQ== -->
-<pre><code>Linking to GEOS 3.8.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkYXRhLnRhYmxlKVxuYGBgIn0= -->
-<pre class="r"><code>library(data.table)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiZGF0YS50YWJsZSAxLjE0LjIgdXNpbmcgMSB0aHJlYWRzIChzZWUgP2dldERUdGhyZWFkcykuICBMYXRlc3QgbmV3czogci1kYXRhdGFibGUuY29tXG4qKioqKioqKioqXG5UaGlzIGluc3RhbGxhdGlvbiBvZiBkYXRhLnRhYmxlIGhhcyBub3QgZGV0ZWN0ZWQgT3Blbk1QIHN1cHBvcnQuIEl0IHNob3VsZCBzdGlsbCB3b3JrIGJ1dCBpbiBzaW5nbGUtdGhyZWFkZWQgbW9kZS5cblRoaXMgaXMgYSBNYWMuIFBsZWFzZSByZWFkIGh0dHBzOi8vbWFjLnItcHJvamVjdC5vcmcvb3Blbm1wLy4gUGxlYXNlIGVuZ2FnZSB3aXRoIEFwcGxlIGFuZCBhc2sgdGhlbSBmb3Igc3VwcG9ydC4gQ2hlY2sgci1kYXRhdGFibGUuY29tIGZvciB1cGRhdGVzLCBhbmQgb3VyIE1hYyBpbnN0cnVjdGlvbnMgaGVyZTogaHR0cHM6Ly9naXRodWIuY29tL1JkYXRhdGFibGUvZGF0YS50YWJsZS93aWtpL0luc3RhbGxhdGlvbi4gQWZ0ZXIgc2V2ZXJhbCB5ZWFycyBvZiBtYW55IHJlcG9ydHMgb2YgaW5zdGFsbGF0aW9uIHByb2JsZW1zIG9uIE1hYywgaXQncyB0aW1lIHRvIGdpbmdlcmx5IHBvaW50IG91dCB0aGF0IHRoZXJlIGhhdmUgYmVlbiBubyBzaW1pbGFyIHByb2JsZW1zIG9uIFdpbmRvd3Mgb3IgTGludXguXG4qKioqKioqKioqXG4ifQ== -->
-<pre><code>data.table 1.14.2 using 1 threads (see ?getDTthreads).  Latest news: r-datatable.com
-**********
-This installation of data.table has not detected OpenMP support. It should still work but in single-threaded mode.
-This is a Mac. Please read https://mac.r-project.org/openmp/. Please engage with Apple and ask them for support. Check r-datatable.com for updates, and our Mac instructions here: https://github.com/Rdatatable/data.table/wiki/Installation. After several years of many reports of installation problems on Mac, it&#39;s time to gingerly point out that there have been no similar problems on Windows or Linux.
-**********</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShha2ltYSlcbmxpYnJhcnkoZHBseXIpXG5gYGAifQ== -->
-<pre class="r"><code>library(ggplot2)
+library(r5r)
+library(sf)
+library(data.table)
+library(ggplot2)
 library(akima)
-library(dplyr)</code></pre>
+library(dplyr)
+library(raster)
+library(osmdata)
+library(mapview)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYZHBseXLigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmRhdGEudGFibGXigJk6XG5cbiAgICBiZXR3ZWVuLCBmaXJzdCwgbGFzdFxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6c3RhdHPigJk6XG5cbiAgICBmaWx0ZXIsIGxhZ1xuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6YmFzZeKAmTpcblxuICAgIGludGVyc2VjdCwgc2V0ZGlmZiwgc2V0ZXF1YWwsIHVuaW9uXG4ifQ== -->
-<pre><code>
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:data.table’:
-
-    between, first, last
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub2xkX29wdGlvbnMgPC0gb3B0aW9ucygpXG4gIG9uLmV4aXQob3B0aW9ucyhvbGRfb3B0aW9ucyksIGFkZCA9IFRSVUUpXG5cbiAgb3B0aW9ucyh0aW1lb3V0ID0gbWF4KDYwMCwgZ2V0T3B0aW9uKFwidGltZW91dFwiKSkpXG5kb3dubG9hZF9yNSgpXG5cbmBgYCJ9 -->
-<pre class="r"><code>old_options &lt;- options()
-  on.exit(options(old_options), add = TRUE)
-
-  options(timeout = max(600, getOption(&quot;timeout&quot;)))
-download_r5()
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5yNXJfY29yZSA8LSBzZXR1cF9yNShcIi9Vc2Vycy90eS9Eb2N1bWVudHMvR2l0aHViL21hcnNoYWxsLWZpcmUvcmF3ZGF0YS9zcGF0aWFsL3I1clwiLCB2ZXJib3NlID0gRkFMU0UpXG5gYGAifQ== -->
+<pre class="r"><code>
+r5r_core &lt;- setup_r5(&quot;/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r&quot;, verbose = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY3VybDo6Y3VybF9mZXRjaF9tZW1vcnkodXJsLCBoYW5kbGUgPSBoYW5kbGUpIDogXG4gIFRpbWVvdXQgd2FzIHJlYWNoZWQ6IFt3d3cuaXBlYS5nb3YuYnJdIFJlc29sdmluZyB0aW1lZCBvdXQgYWZ0ZXIgMTAwMDEgbWlsbGlzZWNvbmRzXG4ifQ== -->
-<pre><code>Error in curl::curl_fetch_memory(url, handle = handle) : 
-  Timeout was reached: [www.ipea.gov.br] Resolving timed out after 10001 milliseconds</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2JiIDwtIGdldGJiIChcIkJvdWxkZXIgQ291bnR5IENvbG9yYWRvXCIpXG5nYmJbMSwxXSA8LSBnYmJbMSwxXSArIDAuM1xuZ2JiWzEsMl0gPC0gZ2JiWzEsMl0gKyAwLjJcbmdiYlsyLDFdIDwtIGdiYlsyLDFdIC0gMC4xMlxuZ2JiWzIsMl0gPC0gZ2JiWzIsMl0gLSAwLjEyXG4gZXh0IDwtIGFzKGV4dGVudChnYmIpICwgXCJTcGF0aWFsUG9seWdvbnNcIilcblxuXG4gICNjbGFzcyhleHQpXG4gICNwcm9qZWN0aW9uKGV4dCkgPC0gcHJvamVjdGlvbihQczEpXG4gIGNycyhleHQpIDwtIFwiRVBTRzo0MzI2XCJcbiAgaCA8LSBzcHNhbXBsZShleHQsIHR5cGUgPSBcImhleGFnb25hbFwiLCBjZWxsc2l6ZSA9IDAuMDA1KVxuICAgICMgY29udmVydCBjZW50ZXIgcG9pbnRzIHRvIGhleGFnb25zXG4gICAgZyA8LSBIZXhQb2ludHMyU3BhdGlhbFBvbHlnb25zKGgsIGR4ID0gMC4wMDUpXG4gICAgZyA8LSBzdF9hc19zZihnKVxuICBwbG90KGcsIGx3ZD0wLjEpXG4gICNwb2ludHMocHRzJG5hbWUueCwgY29sPVwiYmx1ZVwiLCBjZXg9MTApXG4gIGhleF9wb2x5cyA8LSBjYmluZChzZXEoMSwgbGVuZ3RoKGckZ2VvbWV0cnkpKSwgZylcbiAgY29sbmFtZXMoaGV4X3BvbHlzKSA8LSBjKFwiaWRfcG9seWdvbnNcIiwgXCJnZW9tZXRyeVwiKSAjIGNoYW5nZSBjb2xuYW1lc1xuXG5cbmBgYCJ9 -->
+<pre class="r"><code>gbb &lt;- getbb (&quot;Boulder County Colorado&quot;)
+gbb[1,1] &lt;- gbb[1,1] + 0.3
+gbb[1,2] &lt;- gbb[1,2] + 0.2
+gbb[2,1] &lt;- gbb[2,1] - 0.12
+gbb[2,2] &lt;- gbb[2,2] - 0.12
+ ext &lt;- as(extent(gbb) , &quot;SpatialPolygons&quot;)
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9Cm9wdGlvbnMoamF2YS5wYXJhbWV0ZXJzID0gIi1YbXgyMEciKQpvcHRpb25zKHRpbWVvdXQgPSBtYXgoNjAwLCBnZXRPcHRpb24oInRpbWVvdXQiKSkpCgpsaWJyYXJ5KHI1cikKbGlicmFyeShzZikKbGlicmFyeShkYXRhLnRhYmxlKQpsaWJyYXJ5KGdncGxvdDIpCmxpYnJhcnkoYWtpbWEpCmxpYnJhcnkoZHBseXIpCmBgYAoKCmBgYHtyfQogCiAgCmRvd25sb2FkX3I1KCkKbGlzdC5maWxlcygiL1VzZXJzL3R5L0RvY3VtZW50cy9HaXRodWIvbWFyc2hhbGwtZmlyZS9yYXdkYXRhL3NwYXRpYWwvcjVyIikKcjVyX2NvcmUgPC0gc2V0dXBfcjUoIi9Vc2Vycy90eS9Eb2N1bWVudHMvR2l0aHViL21hcnNoYWxsLWZpcmUvcmF3ZGF0YS9zcGF0aWFsL3I1ciIsIHZlcmJvc2UgPSBGQUxTRSkKYGBgCgo=</div>
+
+  #class(ext)
+  #projection(ext) &lt;- projection(Ps1)
+  crs(ext) &lt;- &quot;EPSG:4326&quot;
+  h &lt;- spsample(ext, type = &quot;hexagonal&quot;, cellsize = 0.005)
+    # convert center points to hexagons
+    g &lt;- HexPoints2SpatialPolygons(h, dx = 0.005)
+    g &lt;- st_as_sf(g)
+  plot(g, lwd=0.1)
+  #points(pts$name.x, col=&quot;blue&quot;, cex=10)
+  hex_polys &lt;- cbind(seq(1, length(g$geometry)), g)
+  colnames(hex_polys) &lt;- c(&quot;id_polygons&quot;, &quot;geometry&quot;) # change colnames
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaG91c2VfZGF0YSA8LSBzdF9yZWFkKFwiL1VzZXJzL3R5L0RvY3VtZW50cy9HaXRodWIvbWFyc2hhbGwtZmlyZS9yYXdkYXRhL3NwYXRpYWwvZGFtYWdlX3JlY29yZHNfZ2VvY29kZWRfbWF0Y2hlZC5ncGtnXCIpICU+JVxuICBzdF90cmFuc2Zvcm0oXCJXR1M4NFwiKVxuaG91c2VfZGF0YSBcblxucGxvdChob3VzZV9kYXRhKVxuYGBgIn0= -->
+<pre class="r"><code>house_data &lt;- st_read(&quot;/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/damage_records_geocoded_matched.gpkg&quot;) %&gt;%
+  st_transform(&quot;WGS84&quot;)
+house_data 
+
+plot(house_data)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2VudHJvaWRzIDwtIHN0X2NlbnRyb2lkKGhleF9wb2x5cylcbmNlbnRlcl9jb29yZHMgPC0gc3RfY29vcmRpbmF0ZXMoY2VudHJvaWRzKVxuXG5jZW50ZXJzIDwtIGNiaW5kKGNlbnRyb2lkcyxjZW50ZXJfY29vcmRzKVxubWFwdmlldyhjZW50ZXJzJFgsIGNlbnRlcnMkWSlcblxud3JpdGUuY3N2KGNlbnRlcnMsIFwiL1VzZXJzL3R5L0RvY3VtZW50cy9HaXRodWIvbWFyc2hhbGwtZmlyZS9yYXdkYXRhL3NwYXRpYWwvcjVyL2hleF9wb2x5cy5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>centroids &lt;- st_centroid(hex_polys)
+center_coords &lt;- st_coordinates(centroids)
+
+centers &lt;- cbind(centroids,center_coords)
+mapview(centers$X, centers$Y)
+
+write.csv(centers, &quot;/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r/hex_polys.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbnN0X2Nycyhob3VzZV9kYXRhKSA8LSBjcnMoaGV4X3BvbHlzKVxuaW50ZXJzZWN0aW9uIDwtIHN0X2ludGVyc2VjdGlvbih4ID0gaGV4X3BvbHlzLCB5ID0gc3RfZ2VvbWV0cnkoaG91c2VfZGF0YSkpXG5cbmludF9yZXN1bHQgPC0gaW50ZXJzZWN0aW9uICU+JSBcbiAgZ3JvdXBfYnkoaWRfcG9seWdvbnMpIFxuXG5wbG90KGcsIGx3ZD0wLjEpXG5wbG90KGludF9yZXN1bHQkZ2VvbWV0cnksIHBjaD0xOSwgY2V4PTAuMjUsIGNvbD1hZGp1c3Rjb2xvcihcImNvcm5mbG93ZXJibHVlXCIsIGFscGhhLmYgPSAwLjIpLCBhZGQ9VFJVRSlcbmBgYCJ9 -->
+<pre class="r"><code>library(dplyr)
+st_crs(house_data) &lt;- crs(hex_polys)
+intersection &lt;- st_intersection(x = hex_polys, y = st_geometry(house_data))
+
+int_result &lt;- intersection %&gt;% 
+  group_by(id_polygons) 
+
+plot(g, lwd=0.1)
+plot(int_result$geometry, pch=19, cex=0.25, col=adjustcolor(&quot;cornflowerblue&quot;, alpha.f = 0.2), add=TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3BlY2llc19yaWNobmVzcyA8LSByZXAoMCwgbWF4KGhleF9wb2x5cyRpZF9wb2x5Z29ucykpXG5oZXhfY291bnRzIDwtIGNiaW5kKGhleF9wb2x5cywgc3BlY2llc19yaWNobmVzcylcblxuaW50X2NvdW50IDwtIGludGVyc2VjdGlvbiAlPiUgXG4gIGdyb3VwX2J5KGlkX3BvbHlnb25zLCAuZHJvcCA9IEZBTFNFKSAlPiUgXG4gIGNvdW50KClcblxuaGV4X2NvdW50cyRzcGVjaWVzX3JpY2huZXNzW2ludF9jb3VudCRpZF9wb2x5Z29uc10gPC0gaW50X2NvdW50JG5cblxucGxvdChoZXhfY291bnRzJGdlb21ldHJ5LCBsd2Q9MC4wMDEsIFxuICAgICBjb2w9Z3JleS5jb2xvcnMobWF4KGhleF9jb3VudHMkc3BlY2llc19yaWNobmVzcyksIHJldiA9IFRSVUUsIHN0YXJ0PTAsIGVuZD0xKVtoZXhfY291bnRzJHNwZWNpZXNfcmljaG5lc3MrMV0pXG5wbG90KGludF9yZXN1bHQkZ2VvbWV0cnksIHBjaD0xOSwgY2V4PTAuMDUsIGNvbD1hZGp1c3Rjb2xvcihcImNvcm5mbG93ZXJibHVlXCIsIGFscGhhLmYgPSAwLjIpLCBhZGQ9VFJVRSlcbmBgYCJ9 -->
+<pre class="r"><code>species_richness &lt;- rep(0, max(hex_polys$id_polygons))
+hex_counts &lt;- cbind(hex_polys, species_richness)
+
+int_count &lt;- intersection %&gt;% 
+  group_by(id_polygons, .drop = FALSE) %&gt;% 
+  count()
+
+hex_counts$species_richness[int_count$id_polygons] &lt;- int_count$n
+
+plot(hex_counts$geometry, lwd=0.001, 
+     col=grey.colors(max(hex_counts$species_richness), rev = TRUE, start=0, end=1)[hex_counts$species_richness+1])
+plot(int_result$geometry, pch=19, cex=0.05, col=adjustcolor(&quot;cornflowerblue&quot;, alpha.f = 0.2), add=TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChoZXhfY291bnRzJGdlb21ldHJ5LCBsd2Q9MC4wMDEsIFxuICAgICBjb2w9aGNsLmNvbG9ycyhtYXgoaGV4X2NvdW50cyRzcGVjaWVzX3JpY2huZXNzKSsyLCBwYWxldHRlID0gXCJ2aXJpZGlzXCIsIGFscGhhID0gTlVMTCwgcmV2ID0gVFJVRSwgZml4dXAgPSBUUlVFKVtoZXhfY291bnRzJHNwZWNpZXNfcmljaG5lc3MrMV0pXG5gYGAifQ== -->
+<pre class="r"><code>plot(hex_counts$geometry, lwd=0.001, 
+     col=hcl.colors(max(hex_counts$species_richness)+2, palette = &quot;viridis&quot;, alpha = NULL, rev = TRUE, fixup = TRUE)[hex_counts$species_richness+1])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzcGRlcClcbmhleF9hZGogPC0gcG9seTJuYihhcyhoZXhfY291bnRzLCBcIlNwYXRpYWxcIikgKVxuXG5wbG90KGhleF9jb3VudHMkZ2VvbWV0cnksIGx3ZD0wLjAwMSwgXG4gICAgIGNvbD1oY2wuY29sb3JzKG1heChoZXhfY291bnRzJHNwZWNpZXNfcmljaG5lc3MpKzIsIHBhbGV0dGUgPSBcInZpcmlkaXNcIiwgYWxwaGEgPSBOVUxMLCByZXYgPSBUUlVFLCBmaXh1cCA9IFRSVUUpW2hleF9jb3VudHMkc3BlY2llc19yaWNobmVzcysxXSlcbnBsb3QoaGV4X2FkaiwgY29vcmRpbmF0ZXMoYXMoaGV4X2NvdW50cywgXCJTcGF0aWFsXCIpKSwgY29sPVwiZGFya2JsdWVcIiwgbHdkPTAuMiwgYWRkPVRSVUUpXG5cbmBgYCJ9 -->
+<pre class="r"><code>library(spdep)
+hex_adj &lt;- poly2nb(as(hex_counts, &quot;Spatial&quot;) )
+
+plot(hex_counts$geometry, lwd=0.001, 
+     col=hcl.colors(max(hex_counts$species_richness)+2, palette = &quot;viridis&quot;, alpha = NULL, rev = TRUE, fixup = TRUE)[hex_counts$species_richness+1])
+plot(hex_adj, coordinates(as(hex_counts, &quot;Spatial&quot;)), col=&quot;darkblue&quot;, lwd=0.2, add=TRUE)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9Cm9wdGlvbnMoamF2YS5wYXJhbWV0ZXJzID0gIi1YbXgyMEciKQpvcHRpb25zKHRpbWVvdXQgPSBtYXgoNjAwLCBnZXRPcHRpb24oInRpbWVvdXQiKSkpCgpsaWJyYXJ5KHI1cikKbGlicmFyeShzZikKbGlicmFyeShkYXRhLnRhYmxlKQpsaWJyYXJ5KGdncGxvdDIpCmxpYnJhcnkoYWtpbWEpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkocmFzdGVyKQpsaWJyYXJ5KG9zbWRhdGEpCmxpYnJhcnkobWFwdmlldykKYGBgCgoKYGBge3J9CgpyNXJfY29yZSA8LSBzZXR1cF9yNSgiL1VzZXJzL3R5L0RvY3VtZW50cy9HaXRodWIvbWFyc2hhbGwtZmlyZS9yYXdkYXRhL3NwYXRpYWwvcjVyIiwgdmVyYm9zZSA9IEZBTFNFKQpgYGAKCgpgYGB7ciwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0KZ2JiIDwtIGdldGJiICgiQm91bGRlciBDb3VudHkgQ29sb3JhZG8iKQpnYmJbMSwxXSA8LSBnYmJbMSwxXSArIDAuMwpnYmJbMSwyXSA8LSBnYmJbMSwyXSArIDAuMgpnYmJbMiwxXSA8LSBnYmJbMiwxXSAtIDAuMTIKZ2JiWzIsMl0gPC0gZ2JiWzIsMl0gLSAwLjEyCiBleHQgPC0gYXMoZXh0ZW50KGdiYikgLCAiU3BhdGlhbFBvbHlnb25zIikKCgogICNjbGFzcyhleHQpCiAgI3Byb2plY3Rpb24oZXh0KSA8LSBwcm9qZWN0aW9uKFBzMSkKICBjcnMoZXh0KSA8LSAiRVBTRzo0MzI2IgogIGggPC0gc3BzYW1wbGUoZXh0LCB0eXBlID0gImhleGFnb25hbCIsIGNlbGxzaXplID0gMC4wMDUpCiAgICAjIGNvbnZlcnQgY2VudGVyIHBvaW50cyB0byBoZXhhZ29ucwogICAgZyA8LSBIZXhQb2ludHMyU3BhdGlhbFBvbHlnb25zKGgsIGR4ID0gMC4wMDUpCiAgICBnIDwtIHN0X2FzX3NmKGcpCiAgcGxvdChnLCBsd2Q9MC4xKQogICNwb2ludHMocHRzJG5hbWUueCwgY29sPSJibHVlIiwgY2V4PTEwKQogIGhleF9wb2x5cyA8LSBjYmluZChzZXEoMSwgbGVuZ3RoKGckZ2VvbWV0cnkpKSwgZykKICBjb2xuYW1lcyhoZXhfcG9seXMpIDwtIGMoImlkX3BvbHlnb25zIiwgImdlb21ldHJ5IikgIyBjaGFuZ2UgY29sbmFtZXMKCgpgYGAKYGBge3J9CmhvdXNlX2RhdGEgPC0gc3RfcmVhZCgiL1VzZXJzL3R5L0RvY3VtZW50cy9HaXRodWIvbWFyc2hhbGwtZmlyZS9yYXdkYXRhL3NwYXRpYWwvZGFtYWdlX3JlY29yZHNfZ2VvY29kZWRfbWF0Y2hlZC5ncGtnIikgJT4lCiAgc3RfdHJhbnNmb3JtKCJXR1M4NCIpCmhvdXNlX2RhdGEgCgpwbG90KGhvdXNlX2RhdGEpCmBgYAoKCmBgYHtyfQpjZW50cm9pZHMgPC0gc3RfY2VudHJvaWQoaGV4X3BvbHlzKQpjZW50ZXJfY29vcmRzIDwtIHN0X2Nvb3JkaW5hdGVzKGNlbnRyb2lkcykKCmNlbnRlcnMgPC0gY2JpbmQoY2VudHJvaWRzLGNlbnRlcl9jb29yZHMpCm1hcHZpZXcoY2VudGVycyRYLCBjZW50ZXJzJFkpCgp3cml0ZS5jc3YoY2VudGVycywgIi9Vc2Vycy90eS9Eb2N1bWVudHMvR2l0aHViL21hcnNoYWxsLWZpcmUvcmF3ZGF0YS9zcGF0aWFsL3I1ci9oZXhfcG9seXMuY3N2IikKYGBgCgoKCmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KGRwbHlyKQpzdF9jcnMoaG91c2VfZGF0YSkgPC0gY3JzKGhleF9wb2x5cykKaW50ZXJzZWN0aW9uIDwtIHN0X2ludGVyc2VjdGlvbih4ID0gaGV4X3BvbHlzLCB5ID0gc3RfZ2VvbWV0cnkoaG91c2VfZGF0YSkpCgppbnRfcmVzdWx0IDwtIGludGVyc2VjdGlvbiAlPiUgCiAgZ3JvdXBfYnkoaWRfcG9seWdvbnMpIAoKcGxvdChnLCBsd2Q9MC4xKQpwbG90KGludF9yZXN1bHQkZ2VvbWV0cnksIHBjaD0xOSwgY2V4PTAuMjUsIGNvbD1hZGp1c3Rjb2xvcigiY29ybmZsb3dlcmJsdWUiLCBhbHBoYS5mID0gMC4yKSwgYWRkPVRSVUUpCmBgYAoKCmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQpzcGVjaWVzX3JpY2huZXNzIDwtIHJlcCgwLCBtYXgoaGV4X3BvbHlzJGlkX3BvbHlnb25zKSkKaGV4X2NvdW50cyA8LSBjYmluZChoZXhfcG9seXMsIHNwZWNpZXNfcmljaG5lc3MpCgppbnRfY291bnQgPC0gaW50ZXJzZWN0aW9uICU+JSAKICBncm91cF9ieShpZF9wb2x5Z29ucywgLmRyb3AgPSBGQUxTRSkgJT4lIAogIGNvdW50KCkKCmhleF9jb3VudHMkc3BlY2llc19yaWNobmVzc1tpbnRfY291bnQkaWRfcG9seWdvbnNdIDwtIGludF9jb3VudCRuCgpwbG90KGhleF9jb3VudHMkZ2VvbWV0cnksIGx3ZD0wLjAwMSwgCiAgICAgY29sPWdyZXkuY29sb3JzKG1heChoZXhfY291bnRzJHNwZWNpZXNfcmljaG5lc3MpLCByZXYgPSBUUlVFLCBzdGFydD0wLCBlbmQ9MSlbaGV4X2NvdW50cyRzcGVjaWVzX3JpY2huZXNzKzFdKQpwbG90KGludF9yZXN1bHQkZ2VvbWV0cnksIHBjaD0xOSwgY2V4PTAuMDUsIGNvbD1hZGp1c3Rjb2xvcigiY29ybmZsb3dlcmJsdWUiLCBhbHBoYS5mID0gMC4yKSwgYWRkPVRSVUUpCmBgYAoKCmBgYHtyfQpwbG90KGhleF9jb3VudHMkZ2VvbWV0cnksIGx3ZD0wLjAwMSwgCiAgICAgY29sPWhjbC5jb2xvcnMobWF4KGhleF9jb3VudHMkc3BlY2llc19yaWNobmVzcykrMiwgcGFsZXR0ZSA9ICJ2aXJpZGlzIiwgYWxwaGEgPSBOVUxMLCByZXYgPSBUUlVFLCBmaXh1cCA9IFRSVUUpW2hleF9jb3VudHMkc3BlY2llc19yaWNobmVzcysxXSkKYGBgCgpgYGB7ciwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0KbGlicmFyeShzcGRlcCkKaGV4X2FkaiA8LSBwb2x5Mm5iKGFzKGhleF9jb3VudHMsICJTcGF0aWFsIikgKQoKcGxvdChoZXhfY291bnRzJGdlb21ldHJ5LCBsd2Q9MC4wMDEsIAogICAgIGNvbD1oY2wuY29sb3JzKG1heChoZXhfY291bnRzJHNwZWNpZXNfcmljaG5lc3MpKzIsIHBhbGV0dGUgPSAidmlyaWRpcyIsIGFscGhhID0gTlVMTCwgcmV2ID0gVFJVRSwgZml4dXAgPSBUUlVFKVtoZXhfY291bnRzJHNwZWNpZXNfcmljaG5lc3MrMV0pCnBsb3QoaGV4X2FkaiwgY29vcmRpbmF0ZXMoYXMoaGV4X2NvdW50cywgIlNwYXRpYWwiKSksIGNvbD0iZGFya2JsdWUiLCBsd2Q9MC4yLCBhZGQ9VFJVRSkKCmBgYAo=</div>
 
 
 
