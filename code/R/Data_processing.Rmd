@@ -6,33 +6,27 @@ output: html_notebook
 This code converts .gpkg files into .geojson so the layers can be uploaded to mapbox.
 
 ```{r}
-
+getwd()
 library(sf)
 library(tidyverse)
-data <- st_read("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/marshall_fire_boundary_nifc.gpkg") %>%
+data <- st_read("../../rawdata/spatial/marshall_fire_boundary_nifc.gpkg") %>%
   st_transform("WGS84")
-
-st_write(data, "marshall_fire_boundary_nifc.geojson")
-
+st_write(data, "marshall_fire_boundary_nifc.geojson", delete_dsn=T)
 
 
-data_2 <- st_read("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/damage_records_geocoded_matched.gpkg") %>%
+data_2 <- st_read("../../rawdata/spatial/damage_records_geocoded_matched.gpkg") %>%
   st_transform("WGS84")
+st_write(data_2, "../../data/spatial/damage_records_geocoded_matched.geojson",
+         delete_dsn=T)
 
-st_write(data_2, "/Users/ty/Documents/Github/marshall-fire/data/spatial/damage_records_geocoded_matched.geojson")
-
-
-
-
-
-
-data_3 <- st_read("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/ztrax_2021_extraction_county_properties_08013.gpkg") %>%
-  st_transform("WGS84")
-
-st_write(data_3, "/Users/ty/Documents/Github/marshall-fire/data/spatial/ztrax_2021_extraction_county_properties_08013.geojson")
+data_3 <- 
+  st_read("../../rawdata/spatial/ztrax_2021_extraction_county_properties_08013.gpkg") %>%
+  st_transform("WGS84") 
+st_write(data_3, "../../data/spatial/ztrax_2021_extraction_county_properties_08013.geojson",
+         delete_dsn=T)
 ```
 
-```{r}
+```{r warning=T}
 library(mapdeck)
 key <- 'pk.eyJ1IjoidHR1ZmYiLCJhIjoiY2t6YWhtNzhqMjJlaDJucHZjeWpuZWc0aCJ9.Z8_7Uub1HB4OgdMLfOHjjg'    ## put your own token here
 set_token('pk.eyJ1IjoidHR1ZmYiLCJhIjoiY2t6YWhtNzhqMjJlaDJucHZjeWpuZWc0aCJ9.Z8_7Uub1HB4OgdMLfOHjjg')

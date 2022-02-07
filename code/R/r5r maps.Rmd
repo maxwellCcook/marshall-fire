@@ -20,8 +20,6 @@ library(mapview)
 
 
 ```{r}
- list.files(system.file("extdata/poa", package = "r5r"))
-c <- read.csv("/Library/Frameworks/R.framework/Versions/4.1/Resources/library/r5r/extdata/poa/poa_hexgrid.csv")
 
 r5r_core <- setup_r5("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r", verbose = FALSE)
 ```
