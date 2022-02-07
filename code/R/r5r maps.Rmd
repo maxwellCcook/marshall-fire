@@ -13,14 +13,104 @@ library(data.table)
 library(ggplot2)
 library(akima)
 library(dplyr)
+library(raster)
+library(osmdata)
+library(mapview)
 ```
 
 
 ```{r}
- 
-  
-download_r5()
-list.files("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r")
+ list.files(system.file("extdata/poa", package = "r5r"))
+c <- read.csv("/Library/Frameworks/R.framework/Versions/4.1/Resources/library/r5r/extdata/poa/poa_hexgrid.csv")
+
 r5r_core <- setup_r5("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r", verbose = FALSE)
 ```
 
+
+```{r, warning=FALSE, message=FALSE}
+gbb <- getbb ("Boulder County Colorado")
+gbb[1,1] <- gbb[1,1] + 0.3
+gbb[1,2] <- gbb[1,2] + 0.2
+gbb[2,1] <- gbb[2,1] - 0.12
+gbb[2,2] <- gbb[2,2] - 0.12
+ ext <- as(extent(gbb) , "SpatialPolygons")
+
+
+  #class(ext)
+  #projection(ext) <- projection(Ps1)
+  crs(ext) <- "EPSG:4326"
+  h <- spsample(ext, type = "hexagonal", cellsize = 0.005)
+    # convert center points to hexagons
+    g <- HexPoints2SpatialPolygons(h, dx = 0.005)
+    g <- st_as_sf(g)
+  plot(g, lwd=0.1)
+  #points(pts$name.x, col="blue", cex=10)
+  hex_polys <- cbind(seq(1, length(g$geometry)), g)
+  colnames(hex_polys) <- c("id_polygons", "geometry") # change colnames
+
+
+```
+```{r}
+house_data <- st_read("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/damage_records_geocoded_matched.gpkg") %>%
+  st_transform("WGS84")
+house_data 
+
+plot(house_data)
+```
+
+
+```{r}
+centroids <- st_centroid(hex_polys)
+center_coords <- st_coordinates(centroids)
+
+centers <- cbind(centroids,center_coords)
+mapview(centers$X, centers$Y)
+
+write.csv(centers, "/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r/hex_polys.csv")
+```
+
+
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+st_crs(house_data) <- crs(hex_polys)
+intersection <- st_intersection(x = hex_polys, y = st_geometry(house_data))
+
+int_result <- intersection %>% 
+  group_by(id_polygons) 
+
+plot(g, lwd=0.1)
+plot(int_result$geometry, pch=19, cex=0.25, col=adjustcolor("cornflowerblue", alpha.f = 0.2), add=TRUE)
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+species_richness <- rep(0, max(hex_polys$id_polygons))
+hex_counts <- cbind(hex_polys, species_richness)
+
+int_count <- intersection %>% 
+  group_by(id_polygons, .drop = FALSE) %>% 
+  count()
+
+hex_counts$species_richness[int_count$id_polygons] <- int_count$n
+
+plot(hex_counts$geometry, lwd=0.001, 
+     col=grey.colors(max(hex_counts$species_richness), rev = TRUE, start=0, end=1)[hex_counts$species_richness+1])
+plot(int_result$geometry, pch=19, cex=0.05, col=adjustcolor("cornflowerblue", alpha.f = 0.2), add=TRUE)
+```
+
+
+```{r}
+plot(hex_counts$geometry, lwd=0.001, 
+     col=hcl.colors(max(hex_counts$species_richness)+2, palette = "viridis", alpha = NULL, rev = TRUE, fixup = TRUE)[hex_counts$species_richness+1])
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(spdep)
+hex_adj <- poly2nb(as(hex_counts, "Spatial") )
+
+plot(hex_counts$geometry, lwd=0.001, 
+     col=hcl.colors(max(hex_counts$species_richness)+2, palette = "viridis", alpha = NULL, rev = TRUE, fixup = TRUE)[hex_counts$species_richness+1])
+plot(hex_adj, coordinates(as(hex_counts, "Spatial")), col="darkblue", lwd=0.2, add=TRUE)
+
+```
