@@ -1762,36 +1762,80 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShyNXIpXG5gYGAifQ== -->
-<pre class="r"><code>library(r5r)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3B0aW9ucyhqYXZhLnBhcmFtZXRlcnMgPSBcIi1YbXgyMEdcIilcbm9wdGlvbnModGltZW91dD0yMDApXG5cbmxpYnJhcnkocjVyKVxuYGBgIn0= -->
+<pre class="r"><code>options(java.parameters = &quot;-Xmx20G&quot;)
+options(timeout=200)
+
+library(r5r)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG5Mb2FkaW5nIHJlcXVpcmVkIG5hbWVzcGFjZTogckphdmFcblRoZSBvcGVyYXRpb24gY291bGRu4oCZdCBiZSBjb21wbGV0ZWQuIFVuYWJsZSB0byBsb2NhdGUgYSBKYXZhIFJ1bnRpbWUuXG5QbGVhc2UgdmlzaXQgaHR0cDovL3d3dy5qYXZhLmNvbSBmb3IgaW5mb3JtYXRpb24gb24gaW5zdGFsbGluZyBKYXZhLlxuXG5XYXJuaW5nIGluIHN5c3RlbShcIi91c3IvbGliZXhlYy9qYXZhX2hvbWVcIiwgaW50ZXJuID0gVFJVRSkgOlxuICBydW5uaW5nIGNvbW1hbmQgJy91c3IvbGliZXhlYy9qYXZhX2hvbWUnIGhhZCBzdGF0dXMgMVxuV2FybmluZyBpbiBmdW4obGlibmFtZSwgcGtnbmFtZSkgOlxuICBDYW5ub3QgZmluZCBKVk0gbGlicmFyeSAnTkEvbGliL3NlcnZlci9saWJqdm0uZHlsaWInXG5JbnN0YWxsIEphdmEgYW5kL29yIGNoZWNrIEpBVkFfSE9NRSAoaWYgaW4gZG91YnQsIGRvIE5PVCBzZXQgaXQsIGl0IHdpbGwgYmUgZGV0ZWN0ZWQpXG5GYWlsZWQgd2l0aCBlcnJvcjogIOKAmC5vbkxvYWQgZmFpbGVkIGluIGxvYWROYW1lc3BhY2UoKSBmb3IgJ3JKYXZhJywgZGV0YWlsczpcbiAgY2FsbDogZnVuKGxpYm5hbWUsIHBrZ25hbWUpXG4gIGVycm9yOiBKVk0gY291bGQgbm90IGJlIGZvdW5k4oCZXG5QbGVhc2UgbWFrZSBzdXJlIHlvdSBoYXZlIGFscmVhZHkgYWxsb2NhdGVkIHNvbWUgbWVtb3J5IHRvIEphdmEgYnkgcnVubmluZzpcbiAgb3B0aW9ucyhqYXZhLnBhcmFtZXRlcnMgPSAnLVhteDJHJykuXG5DdXJyZW50bHksIEphdmEgbWVtb3J5IGlzIHNldCB0byBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG5Mb2FkaW5nIHJlcXVpcmVkIG5hbWVzcGFjZTogc2ZcbkxvYWRpbmcgcmVxdWlyZWQgbmFtZXNwYWNlOiBySmF2YVxuUGxlYXNlIG1ha2Ugc3VyZSB5b3UgaGF2ZSBhbHJlYWR5IGFsbG9jYXRlZCBzb21lIG1lbW9yeSB0byBKYXZhIGJ5IHJ1bm5pbmc6XG4gIG9wdGlvbnMoamF2YS5wYXJhbWV0ZXJzID0gJy1YbXgyRycpLlxuQ3VycmVudGx5LCBKYXZhIG1lbW9yeSBpcyBzZXQgdG8gLVhteDIwR1xuIn0= -->
 <pre><code>Registered S3 method overwritten by &#39;data.table&#39;:
   method           from
   print.data.table     
+Loading required namespace: sf
 Loading required namespace: rJava
-The operation couldn’t be completed. Unable to locate a Java Runtime.
-Please visit http://www.java.com for information on installing Java.
-
-Warning in system(&quot;/usr/libexec/java_home&quot;, intern = TRUE) :
-  running command &#39;/usr/libexec/java_home&#39; had status 1
-Warning in fun(libname, pkgname) :
-  Cannot find JVM library &#39;NA/lib/server/libjvm.dylib&#39;
-Install Java and/or check JAVA_HOME (if in doubt, do NOT set it, it will be detected)
-Failed with error:  ‘.onLoad failed in loadNamespace() for &#39;rJava&#39;, details:
-  call: fun(libname, pkgname)
-  error: JVM could not be found’
 Please make sure you have already allocated some memory to Java by running:
   options(java.parameters = &#39;-Xmx2G&#39;).
-Currently, Java memory is set to </code></pre>
+Currently, Java memory is set to -Xmx20G</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzZilcbmBgYCJ9 -->
+<pre class="r"><code>library(sf)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTGlua2luZyB0byBHRU9TIDMuOC4xLCBHREFMIDMuMi4xLCBQUk9KIDcuMi4xOyBzZl91c2VfczIoKSBpcyBUUlVFXG4ifQ== -->
+<pre><code>Linking to GEOS 3.8.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkYXRhLnRhYmxlKVxuYGBgIn0= -->
+<pre class="r"><code>library(data.table)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiZGF0YS50YWJsZSAxLjE0LjIgdXNpbmcgMSB0aHJlYWRzIChzZWUgP2dldERUdGhyZWFkcykuICBMYXRlc3QgbmV3czogci1kYXRhdGFibGUuY29tXG4qKioqKioqKioqXG5UaGlzIGluc3RhbGxhdGlvbiBvZiBkYXRhLnRhYmxlIGhhcyBub3QgZGV0ZWN0ZWQgT3Blbk1QIHN1cHBvcnQuIEl0IHNob3VsZCBzdGlsbCB3b3JrIGJ1dCBpbiBzaW5nbGUtdGhyZWFkZWQgbW9kZS5cblRoaXMgaXMgYSBNYWMuIFBsZWFzZSByZWFkIGh0dHBzOi8vbWFjLnItcHJvamVjdC5vcmcvb3Blbm1wLy4gUGxlYXNlIGVuZ2FnZSB3aXRoIEFwcGxlIGFuZCBhc2sgdGhlbSBmb3Igc3VwcG9ydC4gQ2hlY2sgci1kYXRhdGFibGUuY29tIGZvciB1cGRhdGVzLCBhbmQgb3VyIE1hYyBpbnN0cnVjdGlvbnMgaGVyZTogaHR0cHM6Ly9naXRodWIuY29tL1JkYXRhdGFibGUvZGF0YS50YWJsZS93aWtpL0luc3RhbGxhdGlvbi4gQWZ0ZXIgc2V2ZXJhbCB5ZWFycyBvZiBtYW55IHJlcG9ydHMgb2YgaW5zdGFsbGF0aW9uIHByb2JsZW1zIG9uIE1hYywgaXQncyB0aW1lIHRvIGdpbmdlcmx5IHBvaW50IG91dCB0aGF0IHRoZXJlIGhhdmUgYmVlbiBubyBzaW1pbGFyIHByb2JsZW1zIG9uIFdpbmRvd3Mgb3IgTGludXguXG4qKioqKioqKioqXG4ifQ== -->
+<pre><code>data.table 1.14.2 using 1 threads (see ?getDTthreads).  Latest news: r-datatable.com
+**********
+This installation of data.table has not detected OpenMP support. It should still work but in single-threaded mode.
+This is a Mac. Please read https://mac.r-project.org/openmp/. Please engage with Apple and ask them for support. Check r-datatable.com for updates, and our Mac instructions here: https://github.com/Rdatatable/data.table/wiki/Installation. After several years of many reports of installation problems on Mac, it&#39;s time to gingerly point out that there have been no similar problems on Windows or Linux.
+**********</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShha2ltYSlcbmxpYnJhcnkoZHBseXIpXG5gYGAifQ== -->
+<pre class="r"><code>library(ggplot2)
+library(akima)
+library(dplyr)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYZHBseXLigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmRhdGEudGFibGXigJk6XG5cbiAgICBiZXR3ZWVuLCBmaXJzdCwgbGFzdFxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6c3RhdHPigJk6XG5cbiAgICBmaWx0ZXIsIGxhZ1xuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6YmFzZeKAmTpcblxuICAgIGludGVyc2VjdCwgc2V0ZGlmZiwgc2V0ZXF1YWwsIHVuaW9uXG4ifQ== -->
+<pre><code>
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:data.table’:
+
+    between, first, last
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub2xkX29wdGlvbnMgPC0gb3B0aW9ucygpXG4gIG9uLmV4aXQob3B0aW9ucyhvbGRfb3B0aW9ucyksIGFkZCA9IFRSVUUpXG5cbiAgb3B0aW9ucyh0aW1lb3V0ID0gbWF4KDYwMCwgZ2V0T3B0aW9uKFwidGltZW91dFwiKSkpXG5kb3dubG9hZF9yNSgpXG5cbmBgYCJ9 -->
+<pre class="r"><code>old_options &lt;- options()
+  on.exit(options(old_options), add = TRUE)
+
+  options(timeout = max(600, getOption(&quot;timeout&quot;)))
+download_r5()
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gY3VybDo6Y3VybF9mZXRjaF9tZW1vcnkodXJsLCBoYW5kbGUgPSBoYW5kbGUpIDogXG4gIFRpbWVvdXQgd2FzIHJlYWNoZWQ6IFt3d3cuaXBlYS5nb3YuYnJdIFJlc29sdmluZyB0aW1lZCBvdXQgYWZ0ZXIgMTAwMDEgbWlsbGlzZWNvbmRzXG4ifQ== -->
+<pre><code>Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached: [www.ipea.gov.br] Resolving timed out after 10001 milliseconds</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKCmBgYHtyfQpsaWJyYXJ5KHI1cikKYGBgCmBgYHtyfQoKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9Cm9wdGlvbnMoamF2YS5wYXJhbWV0ZXJzID0gIi1YbXgyMEciKQpvcHRpb25zKHRpbWVvdXQgPSBtYXgoNjAwLCBnZXRPcHRpb24oInRpbWVvdXQiKSkpCgpsaWJyYXJ5KHI1cikKbGlicmFyeShzZikKbGlicmFyeShkYXRhLnRhYmxlKQpsaWJyYXJ5KGdncGxvdDIpCmxpYnJhcnkoYWtpbWEpCmxpYnJhcnkoZHBseXIpCmBgYAoKCmBgYHtyfQogCiAgCmRvd25sb2FkX3I1KCkKbGlzdC5maWxlcygiL1VzZXJzL3R5L0RvY3VtZW50cy9HaXRodWIvbWFyc2hhbGwtZmlyZS9yYXdkYXRhL3NwYXRpYWwvcjVyIikKcjVyX2NvcmUgPC0gc2V0dXBfcjUoIi9Vc2Vycy90eS9Eb2N1bWVudHMvR2l0aHViL21hcnNoYWxsLWZpcmUvcmF3ZGF0YS9zcGF0aWFsL3I1ciIsIHZlcmJvc2UgPSBGQUxTRSkKYGBgCgo=</div>
 
 
 

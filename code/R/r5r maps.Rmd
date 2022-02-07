@@ -3,11 +3,24 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-
 ```{r}
+options(java.parameters = "-Xmx20G")
+options(timeout = max(600, getOption("timeout")))
+
 library(r5r)
+library(sf)
+library(data.table)
+library(ggplot2)
+library(akima)
+library(dplyr)
 ```
-```{r}
 
+
+```{r}
+ 
+  
+download_r5()
+list.files("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r")
+r5r_core <- setup_r5("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r", verbose = FALSE)
 ```
 
