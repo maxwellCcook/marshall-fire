@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Folders
 maps/
+code/Python/noaa-goes16/
+code/Python/noaa-goes17/
+rawdata/spatial/r5r/us-west-latest.osm.pbf

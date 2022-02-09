@@ -3,7 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+```{r warning=F, include=F}
 options(java.parameters = "-Xmx20G")
 options(timeout = max(600, getOption("timeout")))
 
@@ -18,10 +18,22 @@ library(osmdata)
 library(mapview)
 ```
 
-
 ```{r}
+getwd()
+r5r_core <- setup_r5("../../rawdata/spatial/r5r", verbose = FALSE)
+```
 
-r5r_core <- setup_r5("/Users/ty/Documents/Github/marshall-fire/rawdata/spatial/r5r", verbose = FALSE)
+Evacuation locations.
+
+```{r fig.height=2.5, fig.width=3}
+evacs <- data.frame(
+  name = c("North Boulder Rec Center", "Lafayette YMCA", " Rocky Mountain Christian Church"),
+  longitude = c(40.0323806365214, 40.01254853407371, 40.103492835730606), 
+  latitude = c(-105.28039226929516, -105.13420991259312, -105.13219290301498)) %>%
+  st_as_sf(coords=c("longitude", "latitude"))
+ggplot()+
+  geom_sf(data=evacs)+
+  theme_minimal()
 ```
 
 
